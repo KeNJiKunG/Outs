@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Required elements-->
+        <id>Outs.Core</id>
+        <version>1.0.1</version>
+        <description>A library to make mocking with FakeItEasy a little bit easier to read.</description>
+        <authors>Kenjikung</authors>
+        <license type="expression">MIT</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/KeNJiKunG/Outs</projectUrl>
+
+
+        <!-- Optional elements -->
+        <!-- ... -->
+    </metadata>
+
+    <files>
+        <file src="README.md" target="\" />
+    </files>
+    <!-- Optional 'files' node -->
+</package>

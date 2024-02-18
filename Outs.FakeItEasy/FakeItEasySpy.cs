@@ -4,7 +4,7 @@ using FakeItEasy.Configuration;
 
 namespace Outs;
 
-public abstract class FakeItEasySpy : Outs.Core.Spy
+public abstract class FakeItEasySpy
 {
     public abstract UnorderedCallAssertion MustHaveHappened();
     public abstract UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption);
