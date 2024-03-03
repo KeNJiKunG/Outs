@@ -32,7 +32,7 @@ public class OutA
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void CallTo(Expression<Action> expr) => Base.CallTo(expr);
 
-    public static IVoidArgumentValidationConfiguration CallTO(Expression<Action> expr, out FakeItEasyActionExpressionSpy spy)
+    public static IVoidArgumentValidationConfiguration CallTo(Expression<Action> expr, out FakeItEasyActionExpressionSpy spy)
     {
         spy = new FakeItEasyActionExpressionSpy(expr);
 

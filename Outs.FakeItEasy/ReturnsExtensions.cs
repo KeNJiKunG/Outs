@@ -17,6 +17,40 @@ public static class ReturnsExtensions
         return configuration.Returns(value);
     }
 
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.Returns{T}(IReturnValueConfiguration{T}, T)"/>
+    /// <param name="result">The value returns by <paramref name="valueFactory"/></param>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<T>>
+        Returns<T>(this IReturnValueArgumentValidationConfiguration<T> configuration, out T result, Func<T> valueFactory)
+    {
+        var value = valueFactory();
+
+        result = value;
+
+        return configuration.Returns(value);
+    }
+
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.Returns{T}(IReturnValueConfiguration{T}, T)"/>
+    /// <param name="result">The value returns by <paramref name="valueFactory"/></param>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TTransformed>>
+        Returns<T, TTransformed>(this IReturnValueArgumentValidationConfiguration<TTransformed> configuration, out T result, T value, Func<T, TTransformed> transform)
+    {
+        result = value;
+
+        return configuration.Returns(transform(value));
+    }
+
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.Returns{T}(IReturnValueConfiguration{T}, T)"/>
+    /// <param name="result">The value returns by <paramref name="valueFactory"/></param>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TTransformed>>
+        Returns<T, TTransformed>(this IReturnValueArgumentValidationConfiguration<TTransformed> configuration, out T result, Func<T> valueFactory, Func<T, TTransformed> transform)
+    {
+        var value = valueFactory();
+
+        result = value;
+
+        return configuration.Returns(transform(value));
+    }
+
     /// <inheritdoc cref="ReturnValueConfigurationExtensions.Returns{T}(IReturnValueConfiguration{Task{T}}, T)"/>
     /// <param name="result">The value of <paramref name="value"/></param>
     public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<T>>>
@@ -25,6 +59,40 @@ public static class ReturnsExtensions
         result = value;
 
         return configuration.Returns(value);
+    }
+
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.Returns{T}(IReturnValueConfiguration{Task{T}}, T)"/>
+    /// <param name="result">The value of <paramref name="value"/></param>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<T>>>
+        Returns<T>(this IReturnValueConfiguration<Task<T>> configuration, out T result, Func<T> valueFactory)
+    {
+        var value = valueFactory();
+
+        result = value;
+
+        return configuration.Returns(value);
+    }
+
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.Returns{T}(IReturnValueConfiguration{Task{T}}, T)"/>
+    /// <param name="result">The value of <paramref name="value"/></param>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<TTransformed>>>
+        Returns<T, TTransformed>(this IReturnValueConfiguration<Task<TTransformed>> configuration, out T result, T value, Func<T, TTransformed> transform)
+    {
+        result = value;
+
+        return configuration.Returns(transform(value));
+    }
+
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.Returns{T}(IReturnValueConfiguration{Task{T}}, T)"/>
+    /// <param name="result">The value of <paramref name="value"/></param>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<TTransformed>>>
+        Returns<T, TTransformed>(this IReturnValueConfiguration<Task<TTransformed>> configuration, out T result, Func<T> valueFactory, Func<T, TTransformed> transform)
+    {
+        var value = valueFactory();
+
+        result = value;
+
+        return configuration.Returns(transform(value));
     }
 
     /// <inheritdoc cref="IReturnValueConfiguration{TMember}.ReturnsLazily(Func{IFakeObjectCall, TMember})"/>
@@ -43,6 +111,25 @@ public static class ReturnsExtensions
             setter(value);
 
             return value;
+        });
+    }
+
+    /// <inheritdoc cref="IReturnValueConfiguration{TMember}.ReturnsLazily(Func{IFakeObjectCall, TMember})"/>
+    /// <param name="proxy">The value returned by <paramref name="valueProducer"/></param>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TTransformed>>
+        ReturnsLazily<T, TTransformed>(this IReturnValueConfiguration<TTransformed> configuration, out Proxy<T> proxy, Func<IFakeObjectCall, T> valueProducer, Func<T, TTransformed> transform)
+    {
+        proxy = new Proxy<T>();
+
+        Action<T> setter = proxy.SetValue;
+
+        return configuration.ReturnsLazily((IFakeObjectCall fakeObjectCall) =>
+        {
+            var value = valueProducer(fakeObjectCall);
+
+            setter(value);
+
+            return transform( value );
         });
     }
 
@@ -65,6 +152,25 @@ public static class ReturnsExtensions
         });
     }
 
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.ReturnsLazily{T}(IReturnValueConfiguration{T}, Func{T})"/>
+    /// <param name="proxy">The value returned by <paramref name="valueProducer"/></param>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TTransformed>>
+        ReturnsLazily<T, TTransformed>(this IReturnValueConfiguration<TTransformed> configuration, out Proxy<T> proxy, Func<T> valueProducer, Func<T, TTransformed> transform)
+    {
+        proxy = new Proxy<T>();
+
+        Action<T> setter = proxy.SetValue;
+
+        return configuration.ReturnsLazily(() =>
+        {
+            var value = valueProducer();
+
+            setter(value);
+
+            return transform( value )!;
+        });
+    }
+
     /// <inheritdoc cref="ReturnValueConfigurationExtensions.ReturnsLazily{T}(IReturnValueConfiguration{Task{T}}, Func{T})"/>
     /// <param name="proxy">The value returned by <paramref name="valueProducer"/></param>
     public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<T>>>
@@ -81,6 +187,25 @@ public static class ReturnsExtensions
             setter(value);
 
             return value;
+        });
+    }
+
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.ReturnsLazily{T}(IReturnValueConfiguration{Task{T}}, Func{T})"/>
+    /// <param name="proxy">The value returned by <paramref name="valueProducer"/></param>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<TTransformed>>>
+        ReturnsLazily<T, TTransformed>(this IReturnValueConfiguration<Task<TTransformed>> configuration, out Proxy<T> proxy, Func<T> valueProducer, Func<T, TTransformed> transform)
+    {
+        proxy = new Proxy<T>();
+
+        Action<T> setter = proxy.SetValue;
+
+        return configuration.ReturnsLazily(() =>
+        {
+            var value = valueProducer();
+
+            setter(value);
+
+            return transform(value)!;
         });
     }
 
@@ -132,6 +257,18 @@ public static class ReturnsExtensions
         configuration.ReturnsNextFromSequence(value1, value2, value3, value4);
     }
 
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.ReturnsNextFromSequence{T}(IReturnValueConfiguration{T}, T[])"/>
+    public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, Sequence<T> sequence)
+    {
+        configuration.ReturnsNextFromSequence(sequence.ToArray());
+    }
+
+        /// <inheritdoc cref="ReturnValueConfigurationExtensions.ReturnsNextFromSequence{T}(IReturnValueConfiguration{T}, T[])"/>
+    public static void ReturnsNextFromSequence<TIntermediate, TTransformed>(this IReturnValueConfiguration<TTransformed> configuration, Sequence<TIntermediate, TTransformed> sequence)
+    {
+        configuration.ReturnsNextFromSequence(sequence.ToArray());
+    }
+
     /// <inheritdoc cref="ReturnValueConfigurationExtensions.ReturnsNextFromSequence{T}(IReturnValueConfiguration{Task{T}}, T[])"/>
     /// <param name="t1">The value returned by <paramref name="value1"/></param>
     public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<Task<T>> configuration, out T t1, T value1)
@@ -178,6 +315,13 @@ public static class ReturnsExtensions
         t4 = value4;
 
         configuration.ReturnsNextFromSequence(value1, value2, value3, value4);
+    }
+
+    /// <inheritdoc cref="ReturnValueConfigurationExtensions.ReturnsNextFromSequence{T}(IReturnValueConfiguration{Task{T}}, T[])"/>
+    /// <param name="sequence">Sequence of values</param>
+    public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<Task<T>> configuration, Sequence<T> sequence)
+    {
+        configuration.ReturnsNextFromSequence(sequence.values.ToArray());
     }
 
     /// <inheritdoc cref="ReturnValueConfigurationExtensions.ReturnsLazily{TReturnType, T1}(IReturnValueConfiguration{TReturnType}, Func{T1, TReturnType})"/>>
@@ -477,6 +621,4 @@ public static class ReturnsExtensions
             return value;
         });
     }
-
-
 }

@@ -7,7 +7,7 @@
     <LangVersion>10.0</LangVersion>
     <Id>Outs.FakeItEasy</Id>
     <VersionPrefix>8.0.0</VersionPrefix>
-    <VersionSuffix>v1</VersionSuffix>
+    <VersionSuffix>v3</VersionSuffix>
     <Authors>Kenjikung</Authors>
     
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
